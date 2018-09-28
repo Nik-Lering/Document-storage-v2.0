@@ -1,0 +1,45 @@
+﻿@using Document_storage_v2.Models
+
+@{
+    /**/
+    ViewBag.Title = "Поделились документами";
+}
+
+@model Document_storage_v2.Models.ShareDocuments
+@if (Request.IsAuthenticated)
+{
+    <h2>Список документов</h2>
+    @Html.Partial("SidebarPartial")
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>Файл</th>
+                <th>Размер</th>
+                <th>Дата создания</th>
+                <th>Принять</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var document in Model.Documents)
+            {
+            <tr>
+                <th><span class="glyphicon glyphicon-file"></span></th>
+                <th>@document.FileName</th>
+                <th>@document.SizeFile байт</th>
+                <th>@document.DateCreate</th>
+                <th>@Html.ActionLink("Принять", "ApplyFile", routeValues: new { @id = document.Id })</th>
+                <th>@Html.ActionLink("Отказаться", "NoApplyFile", routeValues: new { @id = document.Id })</th>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>Сначала авторизируйтесь</h2>
+}
+
+
+

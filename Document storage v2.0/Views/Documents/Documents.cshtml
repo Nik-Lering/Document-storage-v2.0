@@ -1,0 +1,79 @@
+﻿@using Document_storage_v2.Models
+
+@{
+    /**/
+    ViewBag.Title = "Документы";
+}
+
+@model Document_storage_v2.Models.DocumentsViewModels
+@if (Request.IsAuthenticated)
+{
+
+    <h2>Список документов</h2>
+    @Html.Partial("SidebarPartial")
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>@Html.ActionLink("Имя файла", "Documents", routeValues: new { @id = Model.ParentId, @SortOrder = "FileName" })</th>
+                <th>@Html.ActionLink("Размер", "Documents", routeValues: new { @id = Model.ParentId, @SortOrder = "SizeFile" })</th>
+                <th>@Html.ActionLink("Дата создания", "Documents", routeValues: new { @id = Model.ParentId, @SortOrder = "DateCreate" })</th>
+                <th>Скачать</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var folder in Model.Folder)
+            {
+            <tr>
+                <th><span class="glyphicon glyphicon-folder-close"></span></th>
+                <th>@Html.ActionLink(@folder.FolderName, "Documents", routeValues: new { @id = folder.Id })</th>
+                <th></th>
+                <th></th>
+            </tr>
+            }
+
+            @foreach (var document in Model.Documents)
+            {
+            <tr>
+                <th><span class="glyphicon glyphicon-file"></span></th>
+                <th>@document.FileName</th>
+                <th>@document.SizeFile байт</th>
+                <th>@document.DateCreate</th>
+                <th>@Html.ActionLink("Скачать", "LoadFile", routeValues: new { @id = document.Id })</th>
+                <th>@Html.ActionLink("Удалить", "DeleteDocument", routeValues: new { @IdDoc = document.Id, @folderId = Model.ParentId })</th>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="button" onclick="ShowDialogAddFolder();" value="Добавить папку" />
+    <input type="button" onclick="ShowDialogAddDocument();" value="Добавить документ" />
+
+
+    <div id="AddFolder" class="modal fade">
+        @Html.Partial("FolderViewPartial", new AddFolder(), new ViewDataDictionary { { "ParentId", Model.ParentId } })
+    </div>
+
+    <div id="AddDocument" class="modal fade">
+        @Html.Partial("AddDocumentViewPartial", new AddDocument(), new ViewDataDictionary { { "ParentId", Model.ParentId } })
+    </div>
+
+    <script>
+        function ShowDialogAddDocument() {
+            $("#AddDocument").modal('show');
+        }
+
+        function ShowDialogAddFolder() {
+            $("#AddFolder").modal('show');
+        }
+
+    </script>
+
+}
+else
+{
+    <h2>Сначала авторизируйтесь</h2>
+}
+
+

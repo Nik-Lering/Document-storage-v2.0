@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Doc Storage</h1>
+    <p class="lead">Doc Storage это сервис для хранения документов, с возможность поделиться ими с другими пользователя</p>
+    @if (!Request.IsAuthenticated)
+    {
+        <p>Для начала работы необходимо авторизоваться</p>
+        @Html.ActionLink("Вход", "#", "#", new { onclick = "$(\"#myModalBox\").modal('show'); return false;" })
+    }
+
+</div>
