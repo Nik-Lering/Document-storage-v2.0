@@ -187,7 +187,7 @@ namespace Document_storage_v2._0.Controllers
                    
                     
 
-                    if (userShare.Id != 0)
+                    if (userShare != null && userShare.Id != 0)
                     {
                         model.ClientId = userShare.Id;
                         docRepo.Transaction(r => r.Save(model));
